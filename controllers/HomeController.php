@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use yii\web\Controller;
 use app\models\Article;
+use app\models\Category;
 
 
 class HomeController extends Controller
@@ -48,13 +49,13 @@ class HomeController extends Controller
         //dd($data);
 
         // 添加
-        // $article = new Article();
-        // $article->title = '纵使啰嗦始终关注不懂珍惜太内疚';
-        // $article->number = 90;
-        // //$data = $article->insert(); 
-        // $data = $article->save();
-        // $id = $article->attributes['id']; //获取刚刚保存的新数据的ID
-        // dd($id);
+        $article = new Article();
+        $article->title = '纵使啰嗦始终关注不懂珍惜太内疚';
+        $article->number = 90;
+        //$data = $article->insert(); 
+        $data = $article->save();
+        $id = $article->attributes['id']; //获取刚刚保存的新数据的ID
+        dd($id);
 
         //修改
         // $article = Article::findOne(7);
@@ -69,9 +70,9 @@ class HomeController extends Controller
 
         // 删除单条数据
         //$article = Article::findOne(8);
-        $article = Article::find()->where(['id'=>7])->one();
-        $data = $article->delete();
-        dd($data);
+        // $article = Article::find()->where(['id'=>7])->one();
+        // $data = $article->delete();
+        // dd($data);
 
         // Article::deleteAll(); //删除所有
         // Article::deleteAll('id=10'); //删除条件
@@ -86,7 +87,22 @@ class HomeController extends Controller
 
     public function actionAbout()
     {
+        // 一对多
+        //$category = Category::findOne(2);
+        //$articles = Article::find()->where(['cate_id'=>$category->attributes['id']])->all();
+        //$articles = $category->hasMany('app\models\Article',['cate_id'=>'id'])->all();
+        // $articles = $category->getArticles();
+        // $articles = $category->articles;
+        // dd($articles);
 
+        // 查分类
+        // $article = Article::findOne(2);
+        // // $category = $article->hasOne('app\models\Category', ['id'=>'cate_id'])->all();
+        // $category=$article->category;
+        // dd($category);
+
+        $articles = Article::find()->with('category')->asArray()->all();
+        dd($articles);
 
         $str = ['s' => 'create a new one.'];
         return $this->render('about', $str);
